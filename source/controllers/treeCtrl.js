@@ -60,6 +60,25 @@
           collapseOrExpand($scope.$nodesScope, false);
         };
 
+        $scope.findOutlineContainer = function (childObj) {
+          var node = null;
+
+          if (childObj) {
+            node = childObj;
+          } else {
+            node = $scope.$element[0];
+          }
+
+          while (node) {
+
+            if (node.className && node.className.indexOf(treeConfig.treeContainerClass) !== -1) {
+              return node;
+            }
+            node = node.parentNode;
+          }
+
+          return null;
+        };
       }
     ]);
 })();

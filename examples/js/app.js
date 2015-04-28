@@ -20,6 +20,10 @@
           controller: 'FilterNodesCtrl',
           templateUrl: 'views/filter-nodes.html'
         })
+        .when('/container-drag-scroll', {
+          controller: 'BasicExampleCtrl',
+          templateUrl: 'views/container-drag-scroll.html'
+        })
         .otherwise({
           redirectTo: '/'
         });

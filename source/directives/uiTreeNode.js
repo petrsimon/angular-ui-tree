@@ -201,18 +201,43 @@
                   'top': topElmPos + 'px'
                 });
 
-                var top_scroll = window.pageYOffset || $window.document.documentElement.scrollTop;
-                var bottom_scroll = top_scroll + (window.innerHeight || $window.document.clientHeight || $window.document.clientHeight);
+                if (!treeConfig.containerScroll) {
+                  var treeContainer = scope.findOutlineContainer(dragInfo.parent.$element[0]);
+                  if (treeContainer) {
+                    var rec = treeContainer.getBoundingClientRect(),
+                      eRec = dragElm[0].getBoundingClientRect();
 
-                // to scroll down if cursor y-position is greater than the bottom position the vertical scroll
-                if (bottom_scroll < eventObj.pageY && bottom_scroll <= document_height) {
-                  window.scrollBy(0, 10);
+                    var c_top = rec.top,
+                      c_bottom = rec.bottom,
+                      e_top = eRec.top,
+                      e_bottom = eRec.bottom;
+
+                    // scroll down
+                    if (c_bottom - e_top < 20) {
+                      treeContainer.scrollTop += 10;
+                    }
+                    // scroll up
+                    else if (e_top - c_top < 20) {
+                      treeContainer.scrollTop -= 10;
+                    }
+                  }
                 }
 
-                // to scroll top if cursor y-position is less than the top position the vertical scroll
-                if (top_scroll > eventObj.pageY) {
-                  window.scrollBy(0, -10);
+                if (treeConfig.windowScroll) {
+                  var top_scroll = window.pageYOffset || $window.document.documentElement.scrollTop;
+                  var bottom_scroll = top_scroll + (window.innerHeight || $window.document.clientHeight || $window.document.clientHeight);
+
+                  // to scroll down if cursor y-position is greater than the bottom position the vertical scroll
+                  if (bottom_scroll < eventObj.pageY && bottom_scroll <= document_height) {
+                    window.scrollBy(0, 10);
+                  }
+
+                  // to scroll top if cursor y-position is less than the top position the vertical scroll
+                  if (top_scroll > eventObj.pageY) {
+                    window.scrollBy(0, -10);
+                  }
                 }
+
 
                 $uiTreeHelper.positionMoved(e, pos, firstMoving);
                 if (firstMoving) {
