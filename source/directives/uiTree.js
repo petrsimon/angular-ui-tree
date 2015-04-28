@@ -107,6 +107,10 @@
 
           };
 
+          callbacks.changed = function (nodeScope){
+
+          };
+
           scope.$watch(attrs.uiTree, function(newVal, oldVal){
             angular.forEach(newVal, function(value, key){
               if (callbacks[key]) {
