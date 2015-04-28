@@ -67,6 +67,37 @@
             }
           });
 
+          /**
+           * Types are defined by 'file_type' : [accepted children types]
+           <pre>
+           var types = {
+                 'file': [],
+                 'folder': ['file', 'folder']
+                 };
+           </pre>
+           * @param src
+           * @param dest
+           * @returns {boolean}
+           */
+          function typeCheck(src, dest) {
+            // turn off node type checking when no types defined
+            if (!scope.types) return true;
+
+            var res = false,
+              st = src.$modelValue.type,
+              parent = dest.$parent.$modelValue;
+
+            // when we are at the root
+            if (parent == undefined) {
+              res = scope.types[st] !== undefined;
+            } else {
+              var pt = parent.type;
+              res = scope.types[pt] && (scope.types[pt].indexOf(st) !== -1);
+            }
+
+            return res;
+          }
+
           // check if the dest node can accept the dragging node
           // by default, we check the 'data-nodrop-enabled' attribute in `ui-tree-nodes`
           // and the 'max-depth' attribute in `ui-tree` or `ui-tree-nodes`.
@@ -75,15 +106,17 @@
             if (destNodesScope.nodropEnabled || destNodesScope.outOfDepth(sourceNodeScope)) {
               return false;
             }
-            return true;
+
+            return typeCheck(sourceNodeScope, destNodesScope);
           };
+
 
           callbacks.beforeDrag = function(sourceNodeScope) {
             return true;
           };
 
           callbacks.removed = function(node){
-          
+
           };
 
           callbacks.dropped = function(event) {
