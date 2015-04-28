@@ -81,14 +81,16 @@
            */
           function typeCheck(src, dest) {
             // turn off node type checking when no types defined
-            if (!scope.types) return true;
+            if (!scope.types) {
+              return true;
+            }
 
             var res = false,
               st = src.$modelValue.type,
               parent = dest.$parent.$modelValue;
 
             // when we are at the root
-            if (parent == undefined) {
+            if (parent === undefined) {
               res = scope.types[st] !== undefined;
             } else {
               var pt = parent.type;

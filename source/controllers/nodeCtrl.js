@@ -3,8 +3,8 @@
 
   angular.module('ui.tree')
 
-    .controller('TreeNodeController', ['$scope', '$element', '$attrs', 'treeConfig',
-      function ($scope, $element, $attrs, treeConfig){
+    .controller('TreeNodeController', ['$scope', '$element', '$attrs', '$timeout', 'treeConfig',
+      function ($scope, $element, $attrs, $timeout, treeConfig){
         this.scope = $scope;
 
         $scope.$element = $element;
